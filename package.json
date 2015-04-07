@@ -1,0 +1,25 @@
+{
+  "name": "nesly-sound",
+  "version": "1.0.0",
+  "description": "Make music with your NES",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/emkay/nesly-sound.git"
+  },
+  "keywords": [
+    "NES",
+    "sound",
+    "8-bit",
+    "music"
+  ],
+  "author": "Michael Matuzak",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/emkay/nesly-sound/issues"
+  },
+  "homepage": "https://github.com/emkay/nesly-sound"
+}
