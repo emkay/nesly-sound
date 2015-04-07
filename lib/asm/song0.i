@@ -16,22 +16,21 @@ song0_header:
 	.byte $81
 	.word song0_tri
 	.byte MUSIC_NOI
-	.byte $01
+	.byte $00
 	.byte NOISE
 	.byte $75
 	.word song0_noise
 
 song0_square1:
-	.byte B2,D3,F3,Gs3,B3,D4,F4,Gs4,B4,D5,F5,Gs5,B5,D6,F6,Gs6
-	.byte Bb2,Db3,E3,G3,Bb3,Db4,E4,G4,Bb4,Db5,E5,G5,Bb5,Db6,E6,G6
+	.byte Ab2,F2,C2,G2,Ab2,F2,C2,G2,Ab2,F2,C2,G2,Ab2,F2,C2,G2,Ab3,F3,C3,G3,Ab3,F3,C3,G3,Ab3,F3,C3,G3,Ab3,F3,C3,G3,Ab5,F5,C5,G5,Ab5,F5,C5,G5,Ab5,F5,C5,G5,Ab5,F5,C5,G5
 	.byte $FF
 song0_square2:
-	.byte Gs5,F5,D5,Gs5,F5,D5,B4,F5,D5,B4,Gs4,D5,B4,Gs4,F4,B4
+	.byte Ab2,F2,C2,G2,Ab2,F2,C2,G2,Ab2,F2,C2,G2,Ab2,F2,C2,G2,Ab3,F3,C2,G2,Ab3,F3,C3,G3,Ab3,F3,C3,G3,Ab3,F3,C3,G3,Ab5,F5,C5,G5,Ab5,F5,C5,G5,Ab5,F5,C5,G5,Ab5,F5,C5,G5
 	.byte $FF
 song0_tri:
-	.byte B2,D3,F3,Gs3,B3,D4,F4,Gs4,B4,D5,F5,Gs5,B5,D6,F6,Gs6
+	.byte Ab2,F2,C2,G2,Ab2,F2,C2,G2,Ab2,F2,C2,G2,Ab2,F2,C2,G2,Ab3,F3,C3,G3,Ab3,F3,C3,G3,Ab3,F3,C3,G3,Ab3,F3,C3,G3,Ab5,F5,C5,G5,Ab5,F5,C5,G5,Ab5,F5,C5,G5,Ab5,F5,C5,G5
 	.byte $FF
 song0_noise:
-	.byte B2,D3,F3,Gs3,B3,D4,F4,Gs4,B4,D5,F5,Gs5,B5,D6,F6,Gs6
+	.byte rest,rest,rest,rest
 	.byte $FF
 

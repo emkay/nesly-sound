@@ -22,7 +22,7 @@ var header = [
     '\t.word song{i}_tri',
     
     '\t.byte MUSIC_NOI',
-    '\t.byte $01',
+    '\t.byte $00',
     '\t.byte NOISE',
     '\t.byte $75',
     '\t.word song{i}_noise'
