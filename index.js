@@ -1,4 +1,9 @@
 var fs = require('fs');
+var mkdirp = require('mkdirp');
+var cpr = require('cpr');
+
+var buildDir = __dirname + '/build';
+var libAsmDir = __dirname + '/lib/asm';
 
 var header = [
     'song{i}_header:',
@@ -106,7 +111,35 @@ Song.prototype.compile = function compile() {
 
     var song = songHeader + '\n\n' + this.song;
     songs.push(song);
-    console.log(song);
 };
 
-module.exports = Song;
+function buildSongs(err) {
+    if (!err) {
+
+        cpr(libAsmDir, buildDir, function (err, files) {
+            if (err) {
+                console.error(err);
+            }
+        });
+
+        songs.forEach(function (song, i) {
+            var filePath = buildDir + '/song' + i + '.i';
+            fs.writeFile(filePath, song, function (err) {
+                if (err) {
+                    console.error(err);
+                }
+            });
+        });
+    } else {
+        console.error(err);
+    }
+}
+
+function write() {
+    mkdirp(buildDir, buildSongs);
+}
+
+module.exports = {
+    Song: Song,
+    write: write
+};
