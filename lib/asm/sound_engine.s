@@ -220,15 +220,3 @@ NUM_SONGS = $04 ;if you add a new song, change this number.
                 ;headers.asm checks this number in its song_up and song_down subroutines
                 ;to determine when to wrap around.
 
-;this is our pointer table.  Each entry is a pointer to a song header                
-song_headers:
-    .word song0_header  ;this is a silence song.  See song0.i for more details
-    ;.word song1_header  ;evil, demented notes
-    ;.word song2_header  ;a sound effect.  Try playing it over the other songs.
-    ;.word song3_header  ;a little chord progression.
-    
-    .include "note_table.i" ;period lookup table for notes
-    .include "song0.i"  ;holds the data for song 0 (header and data streams)
-    ;.include "song1.i"  ;holds the data for song 1
-    ;.include "song2.i"
-    ;.include "song3.i"

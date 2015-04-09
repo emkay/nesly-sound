@@ -106,7 +106,7 @@ var song2Music = [
 song2.square1(song2Music);
 song2.square2(song2Music);
 song2.triangle(song2Music);
-song.noise(song2Music);
+song2.noise(song2Music);
 
 song.compile();
 song2.compile();

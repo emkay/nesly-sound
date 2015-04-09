@@ -34,10 +34,10 @@ var header = [
 ];
 
 var songs = [];
+var index = 0;
 
 function Song() {
-    var i = songs.length;
-    var prefix = 'song' + i + '_';
+    var prefix = 'song' + index + '_';
 
     this.sqr1 = prefix + 'square1:\n';
     this.hasSquare1 = false;
@@ -52,6 +52,7 @@ function Song() {
     this.hasNoise = false;
 
     this.song = '';
+    index++;
 }
 
 function compileNotes(notes) {
@@ -114,22 +115,50 @@ Song.prototype.compile = function compile() {
 };
 
 function buildSongs(err) {
+    var soundEnginePath = buildDir + '/sound_engine.s';
+    var songsOut = 'song_headers:\n';
+    var words = [];
+    var includes = [];
+
     if (!err) {
 
         cpr(libAsmDir, buildDir, function (err, files) {
             if (err) {
                 console.error(err);
+            } else {
+                songs.forEach(function (song, i) {
+                    var filePath = buildDir + '/song' + i + '.i';
+                    var word = '\t.word song' + i + '_header\n';
+                    var include = '\t.include "song' + i + '.i"\n';
+
+                    fs.writeFile(filePath, song, function (err) {
+                        if (err) {
+                            console.error(err);
+                        }
+                    });
+
+                    words.push(word);
+                    includes.push(include);
+                });
+
+                words.forEach(function (w) {
+                    songsOut += w;
+                });
+
+                songsOut += '\n\t.include "note_table.i"\n';
+
+                includes.forEach(function (inc) {
+                    songsOut += inc;
+                });
+
+                fs.appendFile(soundEnginePath, songsOut, function (err) {
+                    if (err) {
+                        console.error(err);
+                    }
+                });
             }
         });
 
-        songs.forEach(function (song, i) {
-            var filePath = buildDir + '/song' + i + '.i';
-            fs.writeFile(filePath, song, function (err) {
-                if (err) {
-                    console.error(err);
-                }
-            });
-        });
     } else {
         console.error(err);
     }
