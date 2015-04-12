@@ -1,4 +1,7 @@
-var Song = require('../');
+var neslySound = require('../');
+var Song = neslySound.Song;
+var write = neslySound.write;
+
 var squareMusic = [
     'Ab2', 'F2', 'C2', 'G2',
     'Ab2', 'F2', 'C2', 'G2',
@@ -82,7 +85,12 @@ var triMusic = [
 ];
 
 var noiseMusic = [
-    'rest', 'rest', 'rest', 'rest'
+    'Ab2', 'F4', 'C2', 'G2',
+    'Ab2', 'F4', 'C2', 'G2',
+    'Ab2', 'F4', 'C2', 'G2',
+    'Ab2', 'F4', 'C2', 'G2',
+    'Ab2', 'F4', 'C2', 'G2',
+    'Ab2', 'F4', 'C2', 'G2'
 ];
 
 var song = new Song();
@@ -93,3 +101,4 @@ song.triangle(triMusic);
 song.noise(noiseMusic);
 
 song.compile();
+write();
