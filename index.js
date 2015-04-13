@@ -5,39 +5,106 @@ var cpr = require('cpr');
 var buildDir = __dirname + '/build';
 var libAsmDir = __dirname + '/lib/asm';
 
-var header = [
-    'song{i}_header:',
-    '\t.byte $04',
-    '\t.byte MUSIC_SQ1',
-    '\t.byte $01',
-    '\t.byte SQUARE_1',
-    '\t.byte $77',
-    '\t.word song{i}_square1',
-    
-    '\t.byte MUSIC_SQ2',
-    '\t.byte $01',
-    '\t.byte SQUARE_2',
-    '\t.byte $B7',
-    '\t.word song{i}_square2',
-    
-    '\t.byte MUSIC_TRI',
-    '\t.byte $01',
-    '\t.byte TRIANGLE',
-    '\t.byte $81',
-    '\t.word song{i}_tri',
-    
-    '\t.byte MUSIC_NOI',
-    '\t.byte $00',
-    '\t.byte NOISE',
-    '\t.byte $75',
-    '\t.word song{i}_noise'
-];
+var songHeaders = {
+    streamCount: 4,
+
+    square1: {
+        name: 'MUSIC_SQ1',
+        enabled: true, // TODO: read from options
+        channel: 'SQUARE_1',
+        duty: '$30', // TODO: read from options
+        ve: '$80',
+        pointer: 'song{i}_square1',
+        tempo: '$4C', // TODO: read from options
+    },
+
+    square2: {
+        name: 'MUSIC_SQ2',
+        enabled: true, // TODO: read from options
+        channel: 'SQUARE_2',
+        duty: '$30', // TODO: read from options
+        ve: '$80',
+        pointer: 'song{i}_square2',
+        tempo: '$4C', // TODO: read from options
+    },
+
+    triangle: {
+        name: 'MUSIC_TRI',
+        enabled: true, // TODO: read from options
+        channel: 'TRIANGLE',
+        ve: '$80',
+        pointer: 'song{i}_tri',
+        tempo: '$4C', // TODO: read from options
+    },
+
+    noise: {
+        name: 'MUSIC_NOI',
+        enabled: false, // TODO: read from options
+        channel: 'NOISE',
+        duty: '$30',
+        ve: 've_drum_decay',
+        pointer: 'song{i}_noise',
+        tempo: '$4C', // TODO: read from options
+    }
+};
+
+
+function genSongHeader() {
+    var channels = [
+        'square1',
+        'square2',
+        'triangle',
+        'noise'
+    ];
+
+    var header = [];
+    header.push('song{i}_header:');
+    header.push('\t.byte $0' + songHeaders['streamCount']);
+
+    channels.forEach(function (channel) {
+        var channelHeader = genChannelHeader(channel);
+        header.push(channelHeader);
+    });
+
+    return header;
+}
+
+function prependByte(prop) {
+    return prop ? '\t.byte ' + prop : '';
+}
+
+function genChannelHeader(channel) {
+    var channelOptions = songHeaders[channel];
+    var name = channelOptions && channelOptions.name;
+    var enabled = channelOptions && channelOptions.enabled ? '$01' : '$00';
+    var channelName = channelOptions && channelOptions.channel;
+    var duty = channelOptions && channelOptions.duty;
+    var ve = channelOptions && channelOptions.ve;
+    var pointer = channelOptions && channelOptions.pointer;
+    var tempo = channelOptions && channelOptions.tempo;
+
+    var channelHeader = [
+        prependByte(name),
+        prependByte(enabled),
+        prependByte(channelName),
+        prependByte(duty),
+        prependByte(ve),
+        '\t.word ' + pointer,
+        prependByte(tempo)
+    ];
+
+    return channelHeader.join('\n');
+}
 
 var songs = [];
 var index = 0;
 
-function Song() {
+function Song(options) {
     var prefix = 'song' + index + '_';
+
+    if (!options) {
+        options = {};
+    }
 
     this.sqr1 = prefix + 'square1:\n';
     this.hasSquare1 = false;
@@ -106,6 +173,7 @@ Song.prototype.compile = function compile() {
     }
 
     var i = songs.length;
+    var header = genSongHeader();
     var songHeader = header.map(function (line) {
         return line.replace('{i}', i);
     }).join('\n');
@@ -116,9 +184,10 @@ Song.prototype.compile = function compile() {
 
 function buildSongs(err) {
     var soundEnginePath = buildDir + '/sound_engine.s';
-    var songsOut = 'song_headers:\n';
+    var songsOut = '\nNUM_SONGS = $0' + songs.length; // kinda hacky :(
     var words = [];
     var includes = [];
+    songsOut += '\n\nsong_headers:\n';
 
     if (!err) {
 
@@ -145,7 +214,10 @@ function buildSongs(err) {
                     songsOut += w;
                 });
 
+                songsOut += '\n\t.include "sound_opcodes.s"\n';
                 songsOut += '\n\t.include "note_table.i"\n';
+                songsOut += '\n\t.include "note_length_table.i"\n';
+                songsOut += '\n\t.include "vol_envelopes.i"\n';
 
                 includes.forEach(function (inc) {
                     songsOut += inc;
