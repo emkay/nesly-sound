@@ -13,7 +13,7 @@ var songHeaders = {
         enabled: true, // TODO: read from options
         channel: 'SQUARE_1',
         duty: '$30', // TODO: read from options
-        ve: '$80',
+        ve: 've_fade_in',
         pointer: 'song{i}_square1',
         tempo: '$4C', // TODO: read from options
     },
@@ -23,7 +23,7 @@ var songHeaders = {
         enabled: true, // TODO: read from options
         channel: 'SQUARE_2',
         duty: '$30', // TODO: read from options
-        ve: '$80',
+        ve: 've_fade_in',
         pointer: 'song{i}_square2',
         tempo: '$4C', // TODO: read from options
     },
@@ -32,7 +32,8 @@ var songHeaders = {
         name: 'MUSIC_TRI',
         enabled: true, // TODO: read from options
         channel: 'TRIANGLE',
-        ve: '$80',
+        duty: '$80',
+        ve: 've_fade_in',
         pointer: 'song{i}_tri',
         tempo: '$4C', // TODO: read from options
     },
@@ -122,54 +123,56 @@ function Song(options) {
     index++;
 }
 
-function compileNotes(notes) {
+Song.prototype.compileNotes = function compileNotes(notes) {
     var s = notes.join(',');
-    return '\t.byte ' + s;
+    var ret = '\t.byte ' + this.length;
+    return ret + '\n\t.byte ' + s;
 }
 
-function endByte() {
-    return '\t.byte $FF\n';
-}
+Song.prototype.length = function length(length) {
+    this.length = length;
+    return this;
+};
 
 Song.prototype.square1 = function square1(notes) {
-    var s = compileNotes(notes);
+    var s = this.compileNotes(notes);
     this.sqr1 += this.hasSquare1 ? '\n' + s : s;
     this.hasSquare1 = true;
 };
 
 Song.prototype.square2 = function square2(notes) {
-    var s = compileNotes(notes);
+    var s = this.compileNotes(notes);
     this.sqr2 += this.hasSquare2 ? '\n' + s : s;
     this.hasSquare2 = true;
 };
 
 Song.prototype.triangle = function triangle(notes) {
-    var s = compileNotes(notes);
+    var s = this.compileNotes(notes);
     this.tri += this.hasTri ? '\n' + s : s;
     this.hasTri = true;
 };
 
 Song.prototype.noise = function noise(notes) {
-    var s = compileNotes(notes);
+    var s = this.compileNotes(notes);
     this.n += this.hasNoise ? '\n' + s : s;
     this.hasNoise = true;
 };
 
 Song.prototype.compile = function compile() {
     if (this.hasSquare1) {
-        this.song += this.sqr1 + '\n' + endByte();
+        this.song += this.sqr1 + '\n';
     }
 
     if (this.hasSquare2) {
-        this.song += this.sqr2 + '\n' + endByte();
+        this.song += this.sqr2 + '\n';
     }
 
     if (this.hasTri) {
-        this.song += this.tri + '\n' + endByte();
+        this.song += this.tri + '\n';
     }
 
     if (this.hasNoise) {
-        this.song += this.n + '\n' + endByte();
+        this.song += this.n + '\n';
     }
 
     var i = songs.length;
