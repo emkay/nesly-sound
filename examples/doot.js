@@ -95,6 +95,7 @@ var noiseMusic = [
 
 var song = new Song();
 
+song.length('d_sixteenth');
 song.square1(squareMusic);
 song.square2(square2Music);
 song.triangle(triMusic);
