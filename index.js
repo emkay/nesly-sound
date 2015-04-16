@@ -2,6 +2,8 @@ var fs = require('fs');
 var mkdirp = require('mkdirp');
 var cpr = require('cpr');
 
+var noteTiming = require('./lib/timing');
+
 var buildDir = __dirname + '/build';
 var libAsmDir = __dirname + '/lib/asm';
 
@@ -123,37 +125,33 @@ function Song(options) {
     index++;
 }
 
-Song.prototype.compileNotes = function compileNotes(notes) {
+Song.prototype.compileNotes = function compileNotes(notes, timing) {
     var s = notes.join(',');
-    var ret = '\t.byte ' + this.length;
+    var time = timing && noteTiming[timing] || 'eighth';
+    var ret = '\t.byte ' + time;
     return ret + '\n\t.byte ' + s;
 }
 
-Song.prototype.length = function length(length) {
-    this.length = length;
-    return this;
-};
-
-Song.prototype.square1 = function square1(notes) {
-    var s = this.compileNotes(notes);
+Song.prototype.square1 = function square1(notes, timing) {
+    var s = this.compileNotes(notes, timing);
     this.sqr1 += this.hasSquare1 ? '\n' + s : s;
     this.hasSquare1 = true;
 };
 
-Song.prototype.square2 = function square2(notes) {
-    var s = this.compileNotes(notes);
+Song.prototype.square2 = function square2(notes, timing) {
+    var s = this.compileNotes(notes, timing);
     this.sqr2 += this.hasSquare2 ? '\n' + s : s;
     this.hasSquare2 = true;
 };
 
-Song.prototype.triangle = function triangle(notes) {
-    var s = this.compileNotes(notes);
+Song.prototype.triangle = function triangle(notes, timing) {
+    var s = this.compileNotes(notes, timing);
     this.tri += this.hasTri ? '\n' + s : s;
     this.hasTri = true;
 };
 
-Song.prototype.noise = function noise(notes) {
-    var s = this.compileNotes(notes);
+Song.prototype.noise = function noise(notes, timing) {
+    var s = this.compileNotes(notes, timing);
     this.n += this.hasNoise ? '\n' + s : s;
     this.hasNoise = true;
 };
