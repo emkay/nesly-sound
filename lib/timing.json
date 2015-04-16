@@ -1,8 +1,13 @@
 {
     "0.03125": "thirtysecond",
     "0.0625": "sixteenth",
+    "0.09375": "d_sixteenth",
     "0.125": "eighth",
+    "0.1875": "d_eighth",
     "0.25": "quarter",
+    "0.375": "d_quarter",
     "0.5": "half",
-    "1": "whole"
+    "0.75": "d_half",
+    "1": "whole",
+    "1.5": "d_whole"
 }
