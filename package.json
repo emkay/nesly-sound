@@ -4,6 +4,7 @@
   "description": "Make music with your NES",
   "main": "index.js",
   "scripts": {
+    "build": "node examples/hashpipe.js && cd build && nesasm start.s && open start.nes",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

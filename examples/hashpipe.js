@@ -92,11 +92,10 @@ var noiseMusic = [
 
 var song = new Song();
 
-song.length('eighth');
-song.square1(squareMusic);
-song.square2(square2Music);
-song.triangle(triMusic);
-song.noise(noiseMusic);
+song.square1(squareMusic, 1/8);
+song.square2(square2Music, 1/8);
+song.triangle(triMusic, 1/8);
+song.noise(noiseMusic, 1/8);
 
 song.compile();
 write();

@@ -1,0 +1,8 @@
+{
+    "0.03125": "thirtysecond",
+    "0.0625": "sixteenth",
+    "0.125": "eighth",
+    "0.25": "quarter",
+    "0.5": "half",
+    "1": "whole"
+}
