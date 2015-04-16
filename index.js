@@ -13,7 +13,7 @@ var songHeaders = {
         enabled: true, // TODO: read from options
         channel: 'SQUARE_1',
         duty: '$30', // TODO: read from options
-        ve: 've_fade_in',
+        ve: '$00',
         pointer: 'song{i}_square1',
         tempo: '$4C', // TODO: read from options
     },
@@ -23,7 +23,7 @@ var songHeaders = {
         enabled: true, // TODO: read from options
         channel: 'SQUARE_2',
         duty: '$30', // TODO: read from options
-        ve: 've_fade_in',
+        ve: '$00',
         pointer: 'song{i}_square2',
         tempo: '$4C', // TODO: read from options
     },
@@ -32,15 +32,15 @@ var songHeaders = {
         name: 'MUSIC_TRI',
         enabled: true, // TODO: read from options
         channel: 'TRIANGLE',
-        duty: '$80',
-        ve: 've_fade_in',
+        duty: '$70',
+        ve: '$00',
         pointer: 'song{i}_tri',
         tempo: '$4C', // TODO: read from options
     },
 
     noise: {
         name: 'MUSIC_NOI',
-        enabled: false, // TODO: read from options
+        enabled: true, // TODO: read from options
         channel: 'NOISE',
         duty: '$30',
         ve: 've_drum_decay',
