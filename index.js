@@ -3,54 +3,10 @@ var mkdirp = require('mkdirp');
 var cpr = require('cpr');
 
 var noteTiming = require('./lib/timing');
+var songHeaders = require('./lib/song-headers');
 
 var buildDir = __dirname + '/build';
 var libAsmDir = __dirname + '/lib/asm';
-
-var songHeaders = {
-    streamCount: 4,
-
-    square1: {
-        name: 'MUSIC_SQ1',
-        enabled: true, // TODO: read from options
-        channel: 'SQUARE_1',
-        duty: '$30', // TODO: read from options
-        ve: '$00',
-        pointer: 'song{i}_square1',
-        tempo: '$4C', // TODO: read from options
-    },
-
-    square2: {
-        name: 'MUSIC_SQ2',
-        enabled: true, // TODO: read from options
-        channel: 'SQUARE_2',
-        duty: '$30', // TODO: read from options
-        ve: '$00',
-        pointer: 'song{i}_square2',
-        tempo: '$4C', // TODO: read from options
-    },
-
-    triangle: {
-        name: 'MUSIC_TRI',
-        enabled: true, // TODO: read from options
-        channel: 'TRIANGLE',
-        duty: '$70',
-        ve: '$00',
-        pointer: 'song{i}_tri',
-        tempo: '$4C', // TODO: read from options
-    },
-
-    noise: {
-        name: 'MUSIC_NOI',
-        enabled: true, // TODO: read from options
-        channel: 'NOISE',
-        duty: '$30',
-        ve: 've_drum_decay',
-        pointer: 'song{i}_noise',
-        tempo: '$4C', // TODO: read from options
-    }
-};
-
 
 function genSongHeader() {
     var channels = [

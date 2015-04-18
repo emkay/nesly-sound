@@ -1,0 +1,43 @@
+{
+    "streamCount": 4,
+
+    "square1": {
+        "name": "MUSIC_SQ1",
+        "enabled": true,
+        "channel": "SQUARE_1",
+        "duty": "$30",
+        "ve": "$00",
+        "pointer": "song{i}_square1",
+        "tempo": "$4C"
+    },
+
+    "square2": {
+        "name": "MUSIC_SQ2",
+        "enabled": true,
+        "channel": "SQUARE_2",
+        "duty": "$30",
+        "ve": "$00",
+        "pointer": "song{i}_square2",
+        "tempo": "$4C"
+    },
+
+    "triangle": {
+        "name": "MUSIC_TRI",
+        "enabled": true,
+        "channel": "TRIANGLE",
+        "duty": "$70",
+        "ve": "$00",
+        "pointer": "song{i}_tri",
+        "tempo": "$4C"
+    },
+
+    "noise": {
+        "name": "MUSIC_NOI",
+        "enabled": true,
+        "channel": "NOISE",
+        "duty": "$30",
+        "ve": "$00",
+        "pointer": "song{i}_noise",
+        "tempo": "$4C"
+    }
+}
