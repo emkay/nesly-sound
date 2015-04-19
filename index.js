@@ -114,19 +114,19 @@ Song.prototype.noise = function noise(notes, timing) {
 
 Song.prototype.compile = function compile() {
     if (this.hasSquare1) {
-        this.song += this.sqr1 + '\n';
+        this.song += this.sqr1 + endSound() + '\n';
     }
 
     if (this.hasSquare2) {
-        this.song += this.sqr2 + '\n';
+        this.song += this.sqr2 + endSound() + '\n';
     }
 
     if (this.hasTri) {
-        this.song += this.tri + '\n';
+        this.song += this.tri + endSound() + '\n';
     }
 
     if (this.hasNoise) {
-        this.song += this.n + '\n';
+        this.song += this.n + endSound() + '\n';
     }
 
     var i = songs.length;
@@ -138,6 +138,10 @@ Song.prototype.compile = function compile() {
     var song = songHeader + '\n\n' + this.song;
     songs.push(song);
 };
+
+function endSound() {
+    return '\n\t.byte endsound\n';
+}
 
 function buildSongs(err) {
     var soundEnginePath = buildDir + '/sound_engine.s';
