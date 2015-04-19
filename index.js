@@ -2,7 +2,7 @@ var fs = require('fs');
 var mkdirp = require('mkdirp');
 var cpr = require('cpr');
 
-var noteTiming = require('./lib/timing');
+var Notes = require('./lib/notes');
 var songHeaders = require('./lib/song-headers');
 
 var buildDir = __dirname + '/build';
@@ -60,58 +60,16 @@ var index = 0;
 
 function Song(options) {
     var prefix = 'song' + index + '_';
+    var notes = Notes(prefix);
 
     if (!options) {
         options = {};
     }
-
-    this.sqr1 = prefix + 'square1:\n';
-    this.hasSquare1 = false;
-
-    this.sqr2 = prefix + 'square2:\n';
-    this.hasSquare2 = false;
-
-    this.tri = prefix + 'tri:\n';
-    this.hasTriangle = false;
-
-    this.n = prefix + 'noise:\n';
-    this.hasNoise = false;
-
+    
     this.song = '';
     index++;
 }
-
-Song.prototype.compileNotes = function compileNotes(notes, timing) {
-    var s = notes.join(',');
-    var time = timing && noteTiming[timing] || 'eighth';
-    var ret = '\t.byte ' + time;
-    return ret + '\n\t.byte ' + s;
-}
-
-Song.prototype.square1 = function square1(notes, timing) {
-    var s = this.compileNotes(notes, timing);
-    this.sqr1 += this.hasSquare1 ? '\n' + s : s;
-    this.hasSquare1 = true;
-};
-
-Song.prototype.square2 = function square2(notes, timing) {
-    var s = this.compileNotes(notes, timing);
-    this.sqr2 += this.hasSquare2 ? '\n' + s : s;
-    this.hasSquare2 = true;
-};
-
-Song.prototype.triangle = function triangle(notes, timing) {
-    var s = this.compileNotes(notes, timing);
-    this.tri += this.hasTri ? '\n' + s : s;
-    this.hasTri = true;
-};
-
-Song.prototype.noise = function noise(notes, timing) {
-    var s = this.compileNotes(notes, timing);
-    this.n += this.hasNoise ? '\n' + s : s;
-    this.hasNoise = true;
-};
-
+ 
 Song.prototype.compile = function compile() {
     if (this.hasSquare1) {
         this.song += this.sqr1 + endSound() + '\n';
