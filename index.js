@@ -59,8 +59,18 @@ var songs = [];
 var index = 0;
 
 function Song(options) {
-    var prefix = 'song' + index + '_';
-    var notes = Notes(prefix);
+    if (!(this instanceof Song)) {
+        return new Song(options);
+    }
+    this.prefix = 'song' + index + '_';
+
+    this.isLooped = false;
+
+    this.notes = Notes(this.prefix);
+    this.square1 = this.notes.square1.bind(this.notes);
+    this.square2 = this.notes.square2.bind(this.notes);
+    this.triangle = this.notes.triangle.bind(this.notes);
+    this.noise = this.notes.noise.bind(this.notes);
 
     if (!options) {
         options = {};
@@ -69,31 +79,37 @@ function Song(options) {
     this.song = '';
     index++;
 }
+
+Song.prototype.loop = function loop() {
+    this.isLooped = true;
+    return this;
+};
+
+Song.prototype.done = function done() {
+    var self = this;
+    var codeMap = self.notes.code;
+    var tempMap = self.notes.temp;
+    var endMap = self.notes.endCode;
  
-Song.prototype.compile = function compile() {
-    if (this.hasSquare1) {
-        this.song += this.sqr1 + endSound() + '\n';
-    }
-
-    if (this.hasSquare2) {
-        this.song += this.sqr2 + endSound() + '\n';
-    }
-
-    if (this.hasTri) {
-        this.song += this.tri + endSound() + '\n';
-    }
-
-    if (this.hasNoise) {
-        this.song += this.n + endSound() + '\n';
-    }
-
     var i = songs.length;
     var header = genSongHeader();
     var songHeader = header.map(function (line) {
         return line.replace('{i}', i);
     }).join('\n');
 
-    var song = songHeader + '\n\n' + this.song;
+    self.song += '\nmain_loop:\n';
+    ['square1', 'square2', 'triangle', 'noise'].forEach(function (channel) {
+        var code = codeMap[channel] + tempMap[channel] + endMap[channel];
+        if (!self.isLooped) {
+            code += endSound();
+        }
+        self.song += code;
+    });
+
+    if (self.isLooped) {
+        self.song += '\n\t.byte loop\n\t.word ' + 'main_loop\n';
+    }
+    var song = songHeader + '\n\n' + self.song;
     songs.push(song);
 };
 
@@ -155,11 +171,8 @@ function buildSongs(err) {
     }
 }
 
-function write() {
+Song.prototype.write = function write() {
     mkdirp(buildDir, buildSongs);
-}
-
-module.exports = {
-    Song: Song,
-    write: write
 };
+
+module.exports = Song;

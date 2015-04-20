@@ -1,17 +1,13 @@
-var neslySound = require('../');
-var Song = neslySound.Song;
+var Song = require('../');
 
 var song = Song();
-var notes = song.notes;
-var square1 = notes.square1;
-var square2 = notes.square2;
-var triangle = notes.triangle;
-var noise = notes.noise;
-
+square1 = song.square1;
+square2 = song.square2;
+triangle = song.triangle;
+noise = song.noise;
 
 square1(['A3', 'C3', 'E3', 'A4'])
-    .timing(1/16)
-    .loop(2);
+    .timing(1/16);
 
 square1(['C3', 'E3', 'G3', 'C4'])
     .timing(1/16);
@@ -22,12 +18,13 @@ square2(['C3', 'E3', 'G3', 'C4'])
 triangle(['A3', 'C3', 'E3', 'A4'])
     .timing(1/16);
     
-triangle([, 'C3', 'E3', 'G3', 'C4'])
+triangle(['C3', 'E3', 'G3', 'C4'])
     .timing(1/16);
 
 noise([4, 6, 4, 6])
-    .mode(1)
     .timing(1/4);
 
 song.loop()
     .done();
+
+song.write();

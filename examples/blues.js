@@ -74,23 +74,11 @@ var drums = [
 
 var song = new Song();
 
-song.square1(music, 1/32);
-song.square2(music, 1/32);
-song.triangle(music, 1/32);
+song.square1(music, 1/32, {loop: true});
+song.square2(music, 1/32, {loop: true});
+song.triangle(music, 1/32, {loop: true});
 
-song.square1(music, 1/32);
-song.square2(music, 1/32);
-song.triangle(music, 1/32);
-
-song.square1(music, 1/32);
-song.square2(music, 1/32);
-song.triangle(music, 1/32);
-
-song.square1(music, 1/32);
-song.square2(music, 1/32);
-song.triangle(music, 1/32);
-
-song.noise(drums, 1/4);
+song.noise(drums, 1/8, {loop: true});
 
 song.compile();
 write();
