@@ -2,7 +2,7 @@ var fs = require('fs');
 var mkdirp = require('mkdirp');
 var cpr = require('cpr');
 
-var noteTiming = require('./lib/timing');
+var Notes = require('./lib/notes');
 var songHeaders = require('./lib/song-headers');
 
 var buildDir = __dirname + '/build';
@@ -59,83 +59,57 @@ var songs = [];
 var index = 0;
 
 function Song(options) {
-    var prefix = 'song' + index + '_';
+    if (!(this instanceof Song)) {
+        return new Song(options);
+    }
+    this.prefix = 'song' + index + '_';
+
+    this.isLooped = false;
+
+    this.notes = Notes(this.prefix);
+    this.square1 = this.notes.square1.bind(this.notes);
+    this.square2 = this.notes.square2.bind(this.notes);
+    this.triangle = this.notes.triangle.bind(this.notes);
+    this.noise = this.notes.noise.bind(this.notes);
 
     if (!options) {
         options = {};
     }
-
-    this.sqr1 = prefix + 'square1:\n';
-    this.hasSquare1 = false;
-
-    this.sqr2 = prefix + 'square2:\n';
-    this.hasSquare2 = false;
-
-    this.tri = prefix + 'tri:\n';
-    this.hasTriangle = false;
-
-    this.n = prefix + 'noise:\n';
-    this.hasNoise = false;
-
+    
     this.song = '';
     index++;
 }
 
-Song.prototype.compileNotes = function compileNotes(notes, timing) {
-    var s = notes.join(',');
-    var time = timing && noteTiming[timing] || 'eighth';
-    var ret = '\t.byte ' + time;
-    return ret + '\n\t.byte ' + s;
-}
-
-Song.prototype.square1 = function square1(notes, timing) {
-    var s = this.compileNotes(notes, timing);
-    this.sqr1 += this.hasSquare1 ? '\n' + s : s;
-    this.hasSquare1 = true;
+Song.prototype.loop = function loop() {
+    this.isLooped = true;
+    return this;
 };
 
-Song.prototype.square2 = function square2(notes, timing) {
-    var s = this.compileNotes(notes, timing);
-    this.sqr2 += this.hasSquare2 ? '\n' + s : s;
-    this.hasSquare2 = true;
-};
-
-Song.prototype.triangle = function triangle(notes, timing) {
-    var s = this.compileNotes(notes, timing);
-    this.tri += this.hasTri ? '\n' + s : s;
-    this.hasTri = true;
-};
-
-Song.prototype.noise = function noise(notes, timing) {
-    var s = this.compileNotes(notes, timing);
-    this.n += this.hasNoise ? '\n' + s : s;
-    this.hasNoise = true;
-};
-
-Song.prototype.compile = function compile() {
-    if (this.hasSquare1) {
-        this.song += this.sqr1 + endSound() + '\n';
-    }
-
-    if (this.hasSquare2) {
-        this.song += this.sqr2 + endSound() + '\n';
-    }
-
-    if (this.hasTri) {
-        this.song += this.tri + endSound() + '\n';
-    }
-
-    if (this.hasNoise) {
-        this.song += this.n + endSound() + '\n';
-    }
-
+Song.prototype.done = function done() {
+    var self = this;
+    var codeMap = self.notes.code;
+    var tempMap = self.notes.temp;
+    var endMap = self.notes.endCode;
+ 
     var i = songs.length;
     var header = genSongHeader();
     var songHeader = header.map(function (line) {
         return line.replace('{i}', i);
     }).join('\n');
 
-    var song = songHeader + '\n\n' + this.song;
+    self.song += '\nmain_loop:\n';
+    ['square1', 'square2', 'triangle', 'noise'].forEach(function (channel) {
+        var code = codeMap[channel] + tempMap[channel] + endMap[channel];
+        if (!self.isLooped) {
+            code += endSound();
+        }
+        self.song += code;
+    });
+
+    if (self.isLooped) {
+        self.song += '\n\t.byte loop\n\t.word ' + 'main_loop\n';
+    }
+    var song = songHeader + '\n\n' + self.song;
     songs.push(song);
 };
 
@@ -197,11 +171,8 @@ function buildSongs(err) {
     }
 }
 
-function write() {
+Song.prototype.write = function write() {
     mkdirp(buildDir, buildSongs);
-}
-
-module.exports = {
-    Song: Song,
-    write: write
 };
+
+module.exports = Song;

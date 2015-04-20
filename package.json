@@ -4,8 +4,8 @@
   "description": "Make music with your NES",
   "main": "index.js",
   "scripts": {
-    "build": "node examples/chords.js && cd build && nesasm start.s && open start.nes",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node examples/song.js && cd build && nesasm start.s && open start.nes",
+    "test": "istanbul cover --dir ${COVERAGE_DIR:-coverage} tape -- test/*.js"
   },
   "repository": {
     "type": "git",
@@ -26,5 +26,9 @@
   "dependencies": {
     "cpr": "^0.4.0",
     "mkdirp": "^0.5.0"
+  },
+  "devDependencies": {
+    "istanbul": "^0.3.13",
+    "tape": "^4.0.0"
   }
 }

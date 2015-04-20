@@ -27,7 +27,7 @@
         "channel": "TRIANGLE",
         "duty": "$70",
         "ve": "$80",
-        "pointer": "song{i}_tri",
+        "pointer": "song{i}_triangle",
         "tempo": "$4C"
     },
 
