@@ -21,7 +21,7 @@ triangle(['A3', 'C3', 'E3', 'A4'])
 triangle(['C3', 'E3', 'G3', 'C4'])
     .timing(1/16);
 
-noise([4, 6, 4, 6])
+noise(['$04', '$06', '$04', '$06'])
     .timing(1/4);
 
 song.loop()
