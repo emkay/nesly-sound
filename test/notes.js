@@ -1,5 +1,5 @@
 var test = require('tape');
-var Notes = require('../../lib/notes');
+var Notes = require('../lib/notes');
 
 test('initial values', function (t) {
     t.plan(5);
