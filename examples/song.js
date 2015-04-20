@@ -1,7 +1,7 @@
 var neslySound = require('../');
 var Song = neslySound.Song;
 
-var song = Song({loop: true});
+var song = Song();
 var notes = song.notes;
 var square1 = notes.square1;
 var square2 = notes.square2;
@@ -29,4 +29,5 @@ noise([4, 6, 4, 6])
     .mode(1)
     .timing(1/4);
 
-song.done();
+song.loop()
+    .done();
