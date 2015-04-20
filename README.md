@@ -1,6 +1,8 @@
 nesly-sound
 ===========
 
+[![Build Status](https://travis-ci.org/emkay/nesly-sound.svg?branch=master)](https://travis-ci.org/emkay/nesly-sound)
+
 Create beautiful music on your NES
 
 ## Special Thanks
