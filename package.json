@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "node examples/song.js && cd build && nesasm start.s && open start.nes",
-    "test": "istanbul cover --dir ${COVERAGE_DIR:-coverage} tape -- test/**/*.js"
+    "test": "istanbul cover --dir ${COVERAGE_DIR:-coverage} tape -- test/*.js"
   },
   "repository": {
     "type": "git",
