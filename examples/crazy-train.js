@@ -1,6 +1,4 @@
-var neslySound = require('../');
-var Song = neslySound.Song;
-var write = neslySound.write;
+var Song = require('../');
 
 var squareMusic = [
     'Fs3', 'Fs3', 'Cs4', 'Fs3',
@@ -69,16 +67,40 @@ var triMusic = [
 ];
 
 var noiseMusic = [
-    'rest'
+    '$04', '$06', '$04', '$06',
+    '$04', '$06', '$04', '$06',
+    '$04', '$06', '$04', '$06',
+    '$04', '$06', '$04', '$06',
+    
+    '$04', '$06', '$04', '$06',
+    '$04', '$06', '$04', '$06',
+    '$04', '$06', '$04', '$06',
+    '$04', '$06', '$04', '$06',
+    
+    '$04', '$06', '$04', '$06',
+    '$04', '$06', '$04', '$06',
+    '$04', '$06', '$04', '$06',
+    '$04', '$06', '$04', '$06',
+    
+    '$04', '$06', '$04', '$06',
+    '$04', '$06', '$04', '$06',
+    '$04', '$06', '$04', '$06',
+    '$04', '$06', '$04', '$06'
 ];
 
-var song = new Song();
+var song = Song();
 
-song.length('d_sixteenth');
-song.square1(squareMusic);
-song.square2(square2Music);
-song.triangle(triMusic);
-song.noise(noiseMusic);
+var square1 = song.square1;
+var square2 = song.square2;
+var triangle = song.triangle;
+var noise = song.noise;
 
-song.compile();
-write();
+square1(squareMusic).timing(1/8);
+square2(square2Music).timing(1/8);
+triangle(triMusic).timing(1/8);
+noise(noiseMusic).timing(1/8);
+
+song.loop()
+    .done();
+
+song.write();

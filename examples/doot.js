@@ -1,6 +1,4 @@
-var neslySound = require('../');
-var Song = neslySound.Song;
-var write = neslySound.write;
+var Song = require('../');
 
 var squareMusic = [
     'Ab2', 'F2', 'C2', 'G2',
@@ -93,13 +91,12 @@ var noiseMusic = [
     'Ab2', 'F4', 'C2', 'G2'
 ];
 
-var song = new Song();
+var song = Song();
 
-song.length('d_sixteenth');
-song.square1(squareMusic);
-song.square2(square2Music);
-song.triangle(triMusic);
-song.noise(noiseMusic);
+song.square1(squareMusic).timing(1/16);
+song.square2(square2Music).timing(1/16);
+song.triangle(triMusic).timing(1/16);
+song.noise(noiseMusic).timing(1/16);
 
-song.compile();
-write();
+song.done();
+song.write();
