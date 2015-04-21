@@ -5,7 +5,7 @@ var cpr = require('cpr');
 var Notes = require('./lib/notes');
 var songHeaders = require('./lib/song-headers');
 
-var buildDir = __dirname + '/build';
+var buildDir = 'build/';
 var libAsmDir = __dirname + '/lib/asm';
 
 function genSongHeader() {
