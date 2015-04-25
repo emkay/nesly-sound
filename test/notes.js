@@ -13,24 +13,21 @@ test('initial values', function (t) {
 });
 
 test('temp code check', function (t) {
-    t.plan(8);
+    t.plan(5);
 
     var notes = Notes('song0_');
-    t.equal(notes.temp.square1, '', 'Square 1 temp code block should be empty');
+    t.equal(notes.currentCode, '', 'Square 1 temp code block should be empty');
     notes.square1(['A3', 'B3', 'C3']);
-    t.equal(notes.temp.square1, '{loop0}\n\t.byte {time}, A3,B3,C3\n', 'Square 1 temp code block does not have the correct output');
+    t.equal(notes.currentCode, '{loop0}\n\t.byte {time}, A3,B3,C3\n', 'Square 1 temp code block does not have the correct output');
 
-    t.equal(notes.temp.square2, '', 'Square 2 temp code block should be empty');
     notes.square2(['A4', 'B4', 'C4']);
-    t.equal(notes.temp.square2, '{loop0}\n\t.byte {time}, A4,B4,C4\n', 'Square 2 temp code block does not have the correct output');
+    t.equal(notes.currentCode, '{loop0}\n\t.byte {time}, A4,B4,C4\n', 'Square 2 temp code block does not have the correct output');
 
-    t.equal(notes.temp.triangle, '', 'Triangle temp code block should be empty');
     notes.triangle(['C3', 'E3', 'G3']);
-    t.equal(notes.temp.triangle, '{loop0}\n\t.byte {time}, C3,E3,G3\n', 'Triangle temp code block does not have the correct output');
+    t.equal(notes.currentCode, '{loop0}\n\t.byte {time}, C3,E3,G3\n', 'Triangle temp code block does not have the correct output');
 
-    t.equal(notes.temp.noise, '', 'Noise temp code block should be empty');
     notes.noise(['$04', '$06', '$04']);
-    t.equal(notes.temp.noise, '{loop0}\n\t.byte {time}, $04,$06,$04\n', 'Noise temp code block does not have the correct output');
+    t.equal(notes.currentCode, '{loop0}\n\t.byte {time}, $04,$06,$04\n', 'Noise temp code block does not have the correct output');
 });
 
 test('set timing', function (t) {
@@ -40,11 +37,11 @@ test('set timing', function (t) {
 
     notes.square1(['A3', 'B3', 'C3'])
     .timing(1/16);
-    t.equal(notes.temp.square1, '{loop0}\n\t.byte sixteenth, A3,B3,C3\n', 'Square 1 temp code block does not have the correct output');
+    t.equal(notes.currentCode, '{loop0}\n\t.byte sixteenth, A3,B3,C3\n', 'Square 1 temp code block does not have the correct output');
 
     notes.square2(['A4', 'B4', 'C4'])
     .timing(1/16);
-    t.equal(notes.temp.square2, '{loop0}\n\t.byte sixteenth, A4,B4,C4\n', 'Square 2 temp code block does not have the correct output');
+    t.equal(notes.currentCode, '{loop0}\n\t.byte sixteenth, A4,B4,C4\n', 'Square 2 temp code block does not have the correct output');
 });
 
 test('looping', function (t) {
@@ -57,5 +54,5 @@ test('looping', function (t) {
     .loop(4);
 
     t.equal(notes.endCode.square1, '\n\t.byte loop1\n\t.word .loop\n', 'Loop end code should exist');
-    t.equal(notes.temp.square1, '\n\t.byte set_loop1_counter, 4\n.loop:\n\n\t.byte sixteenth, A3,B3,C3\n', 'Loop label and note code should exist');
+    t.equal(notes.currentCode, '\n\t.byte set_loop1_counter, 4\n.loop:\n\n\t.byte sixteenth, A3,B3,C3\n', 'Loop label and note code should exist');
 });

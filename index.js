@@ -99,7 +99,8 @@ Song.prototype.done = function done() {
 
     self.song += '\nmain_loop:\n';
     ['square1', 'square2', 'triangle', 'noise'].forEach(function (channel) {
-        var code = codeMap[channel] + tempMap[channel].replace(/\{loop\d\}/, '') + endMap[channel];
+        var currentCode = self.notes.current === channel ? self.notes.currentCode : '';
+        var code = codeMap[channel] + currentCode + tempMap[channel].replace(/\{loop\d\}/, '') + endMap[channel];
         if (!self.isLooped) {
             code += endSound();
         }
