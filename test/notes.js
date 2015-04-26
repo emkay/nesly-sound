@@ -45,7 +45,7 @@ test('set timing', function (t) {
 });
 
 test('looping', function (t) {
-    t.plan(2);
+    t.plan(1);
 
     var notes = Notes('song0_');
 
@@ -53,6 +53,5 @@ test('looping', function (t) {
     .timing(1/16)
     .loop(4);
 
-    t.equal(notes.endCode.square1, '\n\t.byte loop1\n\t.word .loop\n', 'Loop end code should exist');
-    t.equal(notes.currentCode, '\n\t.byte set_loop1_counter, 4\n.loop:\n\n\t.byte sixteenth, A3,B3,C3\n', 'Loop label and note code should exist');
+    t.equal(notes.currentCode, '\n\t.byte set_loop1_counter, 4\n.loop:\n\n\t.byte sixteenth, A3,B3,C3\n\n\t.byte loop1\n\t.word .loop\n', 'Loop label and note code should exist');
 });

@@ -89,7 +89,6 @@ Song.prototype.done = function done() {
     var self = this;
     var codeMap = self.notes.code;
     var tempMap = self.notes.temp;
-    var endMap = self.notes.endCode;
  
     var i = songs.length;
     var header = genSongHeader();
@@ -100,7 +99,7 @@ Song.prototype.done = function done() {
     self.song += '\nmain_loop:\n';
     ['square1', 'square2', 'triangle', 'noise'].forEach(function (channel) {
         var currentCode = self.notes.current === channel ? self.notes.currentCode : '';
-        var code = codeMap[channel] + currentCode.replace(/\{loop\d\}/gm, '') + tempMap[channel].replace(/\{loop\d\}/gm, '') + endMap[channel];
+        var code = codeMap[channel] + currentCode.replace(/\{loop\d\}/gm, '') + tempMap[channel].replace(/\{loop\d\}/gm, '');
         if (!self.isLooped) {
             code += endSound();
         }

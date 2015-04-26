@@ -10,10 +10,13 @@ square1(['A3', 'C3', 'E3', 'A4'])
     .timing(1/4)
     .loop(2);
 
+square1(['A7', 'C7', 'E7', 'A8'])
+    .timing(1/4);
+
 square2(['C3', 'E3', 'G3', 'C4'])
     .timing(1/4)
     .loop(2);
-    
+
 triangle(['C3', 'E3', 'G3', 'C4'])
     .timing(1/4)
     .loop(2);
