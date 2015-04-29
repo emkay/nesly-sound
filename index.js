@@ -4,6 +4,7 @@ var cpr = require('cpr');
 
 var Notes = require('./lib/notes');
 var songHeaders = require('./lib/song-headers');
+var noteTiming = require('./lib/timing');
 
 var buildDir = 'build/';
 var libAsmDir = __dirname + '/lib/asm';
@@ -75,7 +76,8 @@ function Song(options) {
     if (!options) {
         options = {};
     }
-    
+
+    this.timing = options.timing || 1/8;
     this.song = '';
     index++;
 }
@@ -103,7 +105,7 @@ Song.prototype.done = function done() {
         if (!self.isLooped) {
             code += endSound();
         }
-        self.song += code;
+        self.song += code.replace(/\{time\}/gm, noteTiming[self.timing]);
     });
 
     if (self.isLooped) {
