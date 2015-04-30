@@ -152,6 +152,7 @@ function buildSongs(err) {
                 });
 
                 songsOut += '\n\t.include "sound_opcodes.s"\n';
+                songsOut += '\n\t.include "duty.s"\n';
                 songsOut += '\n\t.include "note_table.i"\n';
                 songsOut += '\n\t.include "note_length_table.i"\n';
                 songsOut += '\n\t.include "vol_envelopes.i"\n';

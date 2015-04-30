@@ -7,6 +7,7 @@ triangle = song.triangle;
 noise = song.noise;
 
 square1(['A3', 'C3', 'E3', 'A4'])
+    .duty(50)
     .loop(2);
 
 square1(['A7', 'C7', 'E7', 'A8'])
