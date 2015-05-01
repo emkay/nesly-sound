@@ -74,12 +74,8 @@ function Song(options) {
     this.triangle = this.notes.triangle.bind(this.notes);
     this.noise = this.notes.noise.bind(this.notes);
 
-    if (!options) {
-        options = {};
-    }
-
-    this.tempo = options.tempo || {};
-    this.timing = options.timing || 1/8;
+    this.options = options ? options : {};
+    this.timing = options && options.timing || 1/8;
     this.song = '';
     index++;
 }
