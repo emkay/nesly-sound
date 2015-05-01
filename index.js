@@ -9,7 +9,8 @@ var noteTiming = require('./lib/timing');
 var buildDir = 'build/';
 var libAsmDir = __dirname + '/lib/asm';
 
-function genSongHeader() {
+function genSongHeader(options) {
+    options = options || {};
     var channels = [
         'square1',
         'square2',
@@ -22,7 +23,7 @@ function genSongHeader() {
     header.push('\t.byte $0' + songHeaders['streamCount']);
 
     channels.forEach(function (channel) {
-        var channelHeader = genChannelHeader(channel);
+        var channelHeader = genChannelHeader(channel, options);
         header.push(channelHeader);
     });
 
@@ -33,7 +34,7 @@ function prependByte(prop) {
     return prop ? '\t.byte ' + prop : '';
 }
 
-function genChannelHeader(channel) {
+function genChannelHeader(channel, options) {
     var channelOptions = songHeaders[channel];
     var name = channelOptions && channelOptions.name;
     var enabled = channelOptions && channelOptions.enabled ? '$01' : '$00';
@@ -41,7 +42,7 @@ function genChannelHeader(channel) {
     var duty = channelOptions && channelOptions.duty;
     var ve = channelOptions && channelOptions.ve;
     var pointer = channelOptions && channelOptions.pointer;
-    var tempo = channelOptions && channelOptions.tempo;
+    var tempo = (options && options.tempo && options.tempo[channel]) || (channelOptions && channelOptions.tempo);
 
     var channelHeader = [
         prependByte(name),
@@ -77,6 +78,7 @@ function Song(options) {
         options = {};
     }
 
+    this.tempo = options.tempo || {};
     this.timing = options.timing || 1/8;
     this.song = '';
     index++;
@@ -93,7 +95,7 @@ Song.prototype.done = function done() {
     var tempMap = self.notes.temp;
  
     var i = songs.length;
-    var header = genSongHeader();
+    var header = genSongHeader(self.options);
     var songHeader = header.map(function (line) {
         return line.replace('{i}', i);
     }).join('\n');
