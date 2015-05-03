@@ -6,7 +6,7 @@
         "enabled": true,
         "channel": "SQUARE_1",
         "duty": "$30",
-        "ve": "$01",
+        "ve": "ve_middle",
         "pointer": "song{i}_square1",
         "tempo": "$4C"
     },
@@ -16,7 +16,7 @@
         "enabled": true,
         "channel": "SQUARE_2",
         "duty": "$30",
-        "ve": "$01",
+        "ve": "ve_middle",
         "pointer": "song{i}_square2",
         "tempo": "$4C"
     },
@@ -26,7 +26,7 @@
         "enabled": true,
         "channel": "TRIANGLE",
         "duty": "$70",
-        "ve": "$80",
+        "ve": "ve_on",
         "pointer": "song{i}_triangle",
         "tempo": "$4C"
     },
