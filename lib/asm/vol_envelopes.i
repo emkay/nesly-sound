@@ -1,7 +1,7 @@
 volume_envelopes:
     .word se_short_staccato
     .word se_fade_in
-    .word se_blip_echo
+    .word se_blip
     .word se_drum_decay
     .word se_middle
     .word se_off
@@ -16,7 +16,7 @@ se_fade_in:
     .byte $0F, $0F
     .byte $FF
 
-se_blip_echo:
+se_blip:
     .byte $0D, $0D, $0D, $0C, $0B, $00, $00, $00, $00, $00
     .byte $00, $00, $00, $00, $06, $06, $06, $05, $04, $00
     .byte $FF
@@ -35,7 +35,7 @@ se_off:
 
 ve_short_staccato = $00
 ve_fade_in = $01
-ve_blip_echo = $02
+ve_blip = $02
 ve_drum_decay = $03
 ve_middle = $04
 ve_on = $04
