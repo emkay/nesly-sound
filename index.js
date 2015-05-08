@@ -1,6 +1,7 @@
 var fs = require('fs');
 var mkdirp = require('mkdirp');
 var cpr = require('cpr');
+var Note = require('octavian').Note;
 
 var Notes = require('./lib/notes');
 var songHeaders = require('./lib/song-headers');
@@ -79,6 +80,11 @@ function Song(options) {
     this.song = '';
     index++;
 }
+
+Song.prototype.note = function note(n) {
+    var note = new Note(n);
+    return note;
+};
 
 Song.prototype.loop = function loop() {
     this.isLooped = true;
