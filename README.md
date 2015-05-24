@@ -19,11 +19,22 @@ Thomas Hjelm wrote the sound engine code in 6052 asm that this project uses. If 
 var song = require('nesly-sound')();
 
 song.square1(['C5', 'E5', 'G5', 'C6'])
-    .timing(1/8)
-    .loop(4);
+    .timing(1/8);
 
-song.loop()
-    .done();
-
+song.done();
 song.write();
 ```
+
+## Methods
+
+### .square1(notes)
+
+### .square2(notes)
+
+### .triangle(notes)
+
+Takes an `Array` of notes. Notes can either be strings with the note letter and octave, or a note object created with [octavian](https://github.com/stevekinney/octavian).
+
+### .noise(notes)
+
+Noise is a little different. Right now it takes string values that directly map to the hex ASM values. For example, '$00' through '$1F' are valid values for noise notes.
