@@ -3,6 +3,8 @@ nesly-sound
 
 [![Build Status](https://travis-ci.org/emkay/nesly-sound.svg?branch=master)](https://travis-ci.org/emkay/nesly-sound)
 
+[![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
+
 Create beautiful music on your NES
 
 ## Special Thanks
