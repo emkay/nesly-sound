@@ -1,32 +1,33 @@
-var fs = require('fs')
-var mkdirp = require('mkdirp')
-var cpr = require('cpr')
-var Note = require('octavian').Note
+const fs = require('fs')
+const mkdirp = require('mkdirp')
+const cpr = require('cpr')
+const Note = require('octavian').Note
 
-var Notes = require('./lib/notes')
-var songHeaders = require('./lib/song-headers')
-var noteTiming = require('./lib/timing')
+const Notes = require('./lib/notes')
+const songHeaders = require('./lib/song-headers')
+const noteTiming = require('./lib/timing')
 
-var buildDir = 'build/'
-var libAsmDir = __dirname + '/lib/asm'
+const buildDir = 'build/'
+const libAsmDir = __dirname + '/lib/asm'
 
 function genSongHeader (options) {
   options = options || {}
-  var channels = [
+  const channels = [
     'square1',
     'square2',
     'triangle',
     'noise'
   ]
 
-  var header = []
+  let header = []
   header.push('song{i}_header:')
   header.push('\t.byte $0' + songHeaders['streamCount'])
 
-  channels.forEach(function (channel) {
-    var channelHeader = genChannelHeader(channel, options)
-    header.push(channelHeader)
+  const tempHeaders = channels.map((channel) => {
+    return genChannelHeader(channel, options)
   })
+
+  header.concat(tempHeaders)
 
   return header
 }
@@ -36,16 +37,16 @@ function prependByte (prop) {
 }
 
 function genChannelHeader (channel, options) {
-  var channelOptions = songHeaders[channel]
-  var name = channelOptions && channelOptions.name
-  var enabled = channelOptions && channelOptions.enabled ? '$01' : '$00'
-  var channelName = channelOptions && channelOptions.channel
-  var duty = channelOptions && channelOptions.duty
-  var ve = channelOptions && channelOptions.ve
-  var pointer = channelOptions && channelOptions.pointer
-  var tempo = (options && options.tempo && options.tempo[channel]) || (channelOptions && channelOptions.tempo)
+  const channelOptions = songHeaders[channel]
+  const name = channelOptions && channelOptions.name
+  const enabled = channelOptions && channelOptions.enabled ? '$01' : '$00'
+  const channelName = channelOptions && channelOptions.channel
+  const duty = channelOptions && channelOptions.duty
+  const ve = channelOptions && channelOptions.ve
+  const pointer = channelOptions && channelOptions.pointer
+  const tempo = (options && options.tempo && options.tempo[channel]) || (channelOptions && channelOptions.tempo)
 
-  var channelHeader = [
+  return [
     prependByte(name),
     prependByte(enabled),
     prependByte(channelName),
@@ -53,12 +54,10 @@ function genChannelHeader (channel, options) {
     prependByte(ve),
     '\t.word ' + pointer,
     prependByte(tempo)
-  ]
-
-  return channelHeader.join('\n')
+  ].join('\n')
 }
 
-var songs = []
+const songs = []
 var index = 0
 
 function Song (options) {
@@ -82,8 +81,7 @@ function Song (options) {
 }
 
 Song.prototype.note = function note (n) {
-  var note = new Note(n)
-  return note
+  return new Note(n)
 }
 
 Song.prototype.loop = function loop () {
@@ -92,22 +90,22 @@ Song.prototype.loop = function loop () {
 }
 
 Song.prototype.done = function done () {
-  var self = this
-  var codeMap = self.notes.code
-  var tempMap = self.notes.temp
-  var channels = ['square1', 'square2', 'triangle', 'noise']
+  const self = this
+  const codeMap = self.notes.code
+  const tempMap = self.notes.temp
+  const channels = ['square1', 'square2', 'triangle', 'noise']
 
-  var i = songs.length
-  var header = genSongHeader(self.options)
-  var songHeader = header.map(function (line) {
+  let i = songs.length
+  const header = genSongHeader(self.options)
+  const songHeader = header.map(function (line) {
     return line.replace('{i}', i)
   }).join('\n')
 
   self.song += '\nmain_loop:\n'
 
   channels.forEach(function (channel) {
-    var currentCode = self.notes.current === channel ? self.notes.currentCode : ''
-    var code = codeMap[channel] + tempMap[channel].replace(/\{loop\d\}/gm, '') + currentCode.replace(/\{loop\d\}/gm, '')
+    const currentCode = self.notes.current === channel ? self.notes.currentCode : ''
+    let code = codeMap[channel] + tempMap[channel].replace(/\{loop\d\}/gm, '') + currentCode.replace(/\{loop\d\}/gm, '')
     if (!self.isLooped) {
       code += endSound()
     }
@@ -117,7 +115,7 @@ Song.prototype.done = function done () {
   if (self.isLooped) {
     self.song += '\n\t.byte loop\n\t.word ' + 'main_loop\n'
   }
-  var song = songHeader + '\n\n' + self.song
+  const song = songHeader + '\n\n' + self.song
   songs.push(song)
 }
 
@@ -126,10 +124,10 @@ function endSound () {
 }
 
 function buildSongs (err) {
-  var soundEnginePath = buildDir + '/sound_engine.s'
-  var songsOut = '\nNUM_SONGS = $0' + songs.length // kinda hacky :(
-  var words = []
-  var includes = []
+  const soundEnginePath = buildDir + '/sound_engine.s'
+  const words = []
+  const includes = []
+  let songsOut = '\nNUM_SONGS = $0' + songs.length // kinda hacky :(
   songsOut += '\n\nsong_headers:\n'
 
   if (!err) {
