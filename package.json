@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "node examples/song.js && cd build && nesasm start.s && open start.nes",
+    "release": "standard-version",
     "test": "standard && istanbul cover --dir ${COVERAGE_DIR:-coverage} tape -- test/*.js"
   },
   "repository": {
@@ -31,6 +32,7 @@
   "devDependencies": {
     "istanbul": "^0.3.13",
     "standard": "^4.0.0",
+    "standard-version": "^2.2.1",
     "tape": "^4.0.0"
   }
 }
