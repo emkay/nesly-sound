@@ -1,6 +1,6 @@
 {
   "name": "nesly-sound",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Make music with your NES",
   "main": "index.js",
   "scripts": {
