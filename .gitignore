@@ -17,4 +17,4 @@ node_modules
 build
 coverage
 
-script/bin
+scripts/bin/
