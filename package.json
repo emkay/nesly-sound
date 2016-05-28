@@ -5,8 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "node examples/song.js && cd build && nesasm start.s && open start.nes",
+    "build-nesasm": "./scripts/nesasm.sh",
+    "install": "npm run build-nesasm",
     "release": "npm test && standard-version && git push --follow-tags origin master; npm publish",
     "test": "standard && istanbul cover --dir ${COVERAGE_DIR:-coverage} tape -- test/*.js"
+
   },
   "repository": {
     "type": "git",
