@@ -8,7 +8,7 @@ const songHeaders = require('./lib/song-headers')
 const noteTiming = require('./lib/timing')
 
 const buildDir = 'build/'
-const libAsmDir = __dirname + '/lib/asm'
+const libAsmDir = `${__dirname}/lib/asm`
 
 function genSongHeader (options) {
   options = options || {}
@@ -19,15 +19,14 @@ function genSongHeader (options) {
     'noise'
   ]
 
-  let header = []
+  const header = []
   header.push('song{i}_header:')
   header.push('\t.byte $0' + songHeaders['streamCount'])
 
-  const tempHeaders = channels.map((channel) => {
-    return genChannelHeader(channel, options)
+  channels.forEach(function (channel) {
+    var channelHeader = genChannelHeader(channel, options)
+    header.push(channelHeader)
   })
-
-  header.concat(tempHeaders)
 
   return header
 }
@@ -46,7 +45,7 @@ function genChannelHeader (channel, options) {
   const pointer = channelOptions && channelOptions.pointer
   const tempo = (options && options.tempo && options.tempo[channel]) || (channelOptions && channelOptions.tempo)
 
-  return [
+  const channelHeader = [
     prependByte(name),
     prependByte(enabled),
     prependByte(channelName),
@@ -54,11 +53,13 @@ function genChannelHeader (channel, options) {
     prependByte(ve),
     '\t.word ' + pointer,
     prependByte(tempo)
-  ].join('\n')
+  ]
+
+  return channelHeader.join('\n')
 }
 
 const songs = []
-var index = 0
+let index = 0
 
 function Song (options) {
   if (!(this instanceof Song)) {
@@ -74,14 +75,15 @@ function Song (options) {
   this.triangle = this.notes.triangle.bind(this.notes)
   this.noise = this.notes.noise.bind(this.notes)
 
-  this.options = options ? options : {}
+  this.options = options || {}
   this.timing = options && options.timing || 1 / 8
   this.song = ''
   index++
 }
 
 Song.prototype.note = function note (n) {
-  return new Note(n)
+  const note = new Note(n)
+  return note
 }
 
 Song.prototype.loop = function loop () {
@@ -95,7 +97,7 @@ Song.prototype.done = function done () {
   const tempMap = self.notes.temp
   const channels = ['square1', 'square2', 'triangle', 'noise']
 
-  let i = songs.length
+  const i = songs.length
   const header = genSongHeader(self.options)
   const songHeader = header.map(function (line) {
     return line.replace('{i}', i)
@@ -125,21 +127,21 @@ function endSound () {
 
 function buildSongs (err) {
   const soundEnginePath = buildDir + '/sound_engine.s'
+  let songsOut = '\nNUM_SONGS = $0' + songs.length // kinda hacky :(
+
   const words = []
   const includes = []
-  let songsOut = '\nNUM_SONGS = $0' + songs.length // kinda hacky :(
   songsOut += '\n\nsong_headers:\n'
 
   if (!err) {
-
     cpr(libAsmDir, buildDir, function (err, files) {
       if (err) {
         console.error(err)
       } else {
         songs.forEach(function (song, i) {
-          var filePath = buildDir + '/song' + i + '.i'
-          var word = '\t.word song' + i + '_header\n'
-          var include = '\t.include "song' + i + '.i"\n'
+          const filePath = buildDir + '/song' + i + '.i'
+          const word = '\t.word song' + i + '_header\n'
+          const include = '\t.include "song' + i + '.i"\n'
 
           fs.writeFile(filePath, song, function (err) {
             if (err) {
@@ -172,7 +174,6 @@ function buildSongs (err) {
         })
       }
     })
-
   } else {
     console.error(err)
   }
