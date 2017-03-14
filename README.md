@@ -1,6 +1,8 @@
 nesly-sound
 ===========
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/emkay/nesly-sound.svg)](https://greenkeeper.io/)
+
 [![Build Status](https://travis-ci.org/emkay/nesly-sound.svg?branch=master)](https://travis-ci.org/emkay/nesly-sound)
 
 [![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
