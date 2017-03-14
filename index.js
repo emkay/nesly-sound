@@ -76,7 +76,7 @@ function Song (options) {
   this.noise = this.notes.noise.bind(this.notes)
 
   this.options = options || {}
-  this.timing = options && options.timing || 1 / 8
+  this.timing = (options && options.timing) || 1 / 8
   this.song = ''
   index++
 }
