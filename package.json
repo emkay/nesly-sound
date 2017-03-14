@@ -25,14 +25,14 @@
   },
   "homepage": "https://github.com/emkay/nesly-sound",
   "dependencies": {
-    "cpr": "^0.4.0",
+    "cpr": "^2.0.2",
     "mkdirp": "^0.5.0",
     "octavian": "^2.0.5"
   },
   "devDependencies": {
-    "istanbul": "^0.3.13",
-    "standard": "^4.0.0",
-    "standard-version": "^2.2.1",
+    "istanbul": "^0.4.5",
+    "standard": "^9.0.1",
+    "standard-version": "^4.0.0",
     "tape": "^4.0.0"
   }
 }
