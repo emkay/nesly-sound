@@ -6,7 +6,9 @@
   "scripts": {
     "build": "node examples/song.js && cd build && nesasm start.s && open start.nes",
     "release": "npm test && standard-version && git push --follow-tags origin master; npm publish",
-    "test": "standard && istanbul cover --dir ${COVERAGE_DIR:-coverage} tape -- test/*.js"
+    "test": "standard && istanbul cover --dir ${COVERAGE_DIR:-coverage} tape -- test/*.js",
+    "update-coc": "weallbehave -o . && git add CODE_OF_CONDUCT.md && git commit -m 'docs(coc): updated CODE_OF_CONDUCT.md'",
+    "update-contrib": "weallcontribute -o . && git add CONTRIBUTING.md && git commit -m 'docs(contributing): updated CONTRIBUTING.md'"
   },
   "repository": {
     "type": "git",
@@ -18,7 +20,10 @@
     "8-bit",
     "music"
   ],
-  "author": "Michael Matuzak",
+  "author": {
+    "name": "Michael Matuzak",
+    "email": "mmatuzak@gmail.com"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/emkay/nesly-sound/issues"
@@ -32,7 +37,9 @@
   "devDependencies": {
     "istanbul": "^0.4.5",
     "standard": "^11.0.0",
-    "standard-version": "^4.0.0",
-    "tape": "^4.0.0"
+    "standard-version": "^4.3.0",
+    "tape": "^4.0.0",
+    "weallbehave": "^1.2.0",
+    "weallcontribute": "^1.0.8"
   }
 }
