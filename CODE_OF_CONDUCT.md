@@ -65,6 +65,10 @@ Once the maintainers get involved, they will follow a documented series of steps
 
 ### Contacting Maintainers
 
+You may get in touch with the maintainer team through any of the following methods:
+
+  * Through email:
+    * [mmatuzak@gmail.com](mailto:mmatuzak@gmail.com) (Michael Matuzak)
 
 ### Further Enforcement
 
