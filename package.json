@@ -31,7 +31,7 @@
   "homepage": "https://github.com/emkay/nesly-sound",
   "dependencies": {
     "cpr": "^3.0.0",
-    "mkdirp": "^0.5.0",
+    "mkdirp": "^1.0.2",
     "octavian": "^2.0.5"
   },
   "devDependencies": {
